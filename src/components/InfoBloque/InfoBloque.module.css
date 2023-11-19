@@ -1,14 +1,38 @@
 .info {
+  align-items: center;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  height: auto;
   width: 324px;
 }
 
 .box {
+  align-items: center;
   border: solid 1px #B7B7B7;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  padding: 32px;
+  gap: 8px;
+  height: auto;
+  padding: 32px 0px;
+  width: 100%;
+}
+
+.nameCorto {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 200px;
+}
+
+.nameLargo {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 200px;
+
 }

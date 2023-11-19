@@ -5,15 +5,14 @@
   display: flex;
   gap: 32px;
   justify-content: space-between;
-  padding: 32px 48px 32px 48px;
-  width: 700px;
+  padding: 32px 48px;
+  width: auto;
 }
 
 .info {
   align-items: center;
   display: flex;
   gap: 24px;
-
 }
 
 .image {
@@ -65,4 +64,19 @@
   border-radius: 24px;
   color: #4277DE;
   padding: 8px 16px;
+}
+
+@media screen and (max-width: 640px) {
+  
+  .turno {
+    align-items: center;
+    background-color: #F7F7F7;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 24px 32px;
+    width: auto;
+  }
+
 }

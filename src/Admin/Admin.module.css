@@ -1,24 +1,38 @@
 .wrapper {
   padding: 80px 120px;
   position: relative;
+  width: auto;
 }
 
 .box {
   display: flex;
-  gap: 24px;
+  gap: 48px;
+  width: 100%;
 }
 
 .turnos {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  width: 100%;
 }
 
-.block {
+.infoBloque {
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 324px;
+}
+
+.bloqueName {
+  color: #2F2D38;
+  font-size: 24px;
+}
+
+.bloque {
+  align-items: center;
+  display: flex;
+  margin: 0;
 }
 
 .button3 {
@@ -115,6 +129,7 @@
 .inputError {
   animation: shake 0.5s ease-in-out;
   border: solid 1px #C1C0C0;
+  border: solid 1px #D43131;
   border-radius: 8px;
   height: 48px;
   padding-left: 12px;
@@ -183,3 +198,25 @@
   gap: 12px;
 }
 
+.noTutores {
+  align-items: center;
+  background-color: #F7F7F7;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  padding: 32px 48px;
+  width: auto;
+}
+
+
+@media screen and (max-width: 640px) {
+  
+  .box {
+    border: solid 1px red;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
+
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import LogoName from '../LogoName/LogoName';
 import s from './Turno.module.css';
 
 function Turno(Turnoprops) {
@@ -8,7 +9,7 @@ function Turno(Turnoprops) {
   return (
     <section className={s.turno}>
         <div className={s.info}>
-          <div className={s.image}>C</div>
+          <LogoName name={name} tipoTutor={tipoTutor}/>
           <div className={s.text}>
             <text className={s.name}>{name}</text>
             <text className={s.type}>{tipoTutor}</text>
