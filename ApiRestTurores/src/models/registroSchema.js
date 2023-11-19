@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const registroSchema = mongoose.Schema({
+const registerSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true
@@ -27,6 +27,8 @@ const registroSchema = mongoose.Schema({
         default: 0
     },
     
-})
+},{
+    timestamps :true
+});
 
-module.exports = mongoose.model('registro', registroSchema)
+module.exports = mongoose.model('registro', registerSchema)

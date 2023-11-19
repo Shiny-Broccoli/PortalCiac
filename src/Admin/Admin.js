@@ -6,6 +6,7 @@ import InfoBloque from "../components/InfoBloque/InfoBloque";
 import Turno from "../components/Turno/Turno";
 import '../styles.css';
 import axios from 'axios';
+import {obtenerDatosDeAPI} from "../api/auth"
 
 //const Arreglo = [{"nombre":"Christian Barrios", "estado": "En turno", "tipoTutor" : "Tutor/a de Mat/Fis"}, {"nombre":"Sofia Rios", "estado": "Ausente", "tipoTutor" : "Tutor/a de Mat/Fis"}];
 
@@ -114,15 +115,7 @@ function Admin() {
   useEffect(() => {
     // Realiza una solicitud GET a la API
     //esta consulta debe mostrar los tutores del turno actual + tutores que estén en reemplazo o en turno.
-    axios.get('http://localhost:9000/api/tutores')
-      .then(response => {
-        const apiData = response.data;
-        console.log('Data de la API:', apiData); // Muestra la data en la consola
-        setData(apiData); // Almacena los datos en el estado del componente
-      })
-      .catch(error => {
-        console.error('Error al obtener datos de la API', error);
-      });
+    obtenerDatosDeAPI(setData);
   }, [accessSuccess]);
   
   return(

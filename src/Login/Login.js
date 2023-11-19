@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import testUser from '../testUser';
 import frame_2 from '../images/Frame_2.png';
 import ciacpng from '../images/Ciac.png';  
-import {useParams, useNavigate} from 'react-router-dom';
+import {useParams, useNavigate, Navigate} from 'react-router-dom';
+import {useForm} from "react-hook-form";
+import { useAuth } from '../contextUser/contextUser';
+
 
 function Login({ role }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loggedIN, setLoggedIN] = useState(false);
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [loggedIN, setLoggedIN] = useState(false);
   const navigate = useNavigate();
 
   const URLvariable = window.location.href;
@@ -16,52 +19,82 @@ function Login({ role }) {
   const lastSegmentMayus = lastSegment.split(/(?=[A-Z])/)
   const Role = lastSegmentMayus[0];
 
+
+  const {register, handleSubmit, formState:{errors}} = useForm();
+  const {login, errors:loginErrors, isAuthenticated}= useAuth();
+
+    
+  const onSubmit = handleSubmit((data) =>{
+    login(data);
+  })
+
+  useEffect(() => {
+    if(isAuthenticated){
+      switch (Role) {
+
+        case 'Admin':
+          navigate('/Admin'); // redirect a Admin
+          break;
+        case 'Tutor':
+          navigate('/vista-tutor'); // 
+          break;
+        case 'Coordinador':
+          navigate('/Coordinador'); // 
+          break;
+        default:
+          console.log('Invalid role');
+      }
+    }
+  }, [isAuthenticated])
+
+
+
   // implemenar logica real, no este meme
-  if (username === testUser.username && password === testUser.password) {
-    console.log(`Logged in as ${role} with username: ${username}`);
+  // if (username === testUser.username && password === testUser.password) {
+  //   console.log(`Logged in as ${role} with username: ${username}`);
 
-    // redirigir a las paginas correspondientes
-    switch (Role) {
+  //   // redirigir a las paginas correspondientes
+  //   switch (Role) {
 
-      case 'Admin':
-        navigate('/Admin'); // redirect a Admin
-        break;
-      case 'Tutor':
-        navigate('/vista-tutor'); // 
-        break;
-      case 'Coordinador':
-        navigate('/Coordinador'); // 
-        break;
-      default:
-        console.log('Invalid role');
-    }
-  } else {
-    console.log('Invalid credentials');
-  }
+  //     case 'Admin':
+  //       navigate('/Admin'); // redirect a Admin
+  //       break;
+  //     case 'Tutor':
+  //       navigate('/vista-tutor'); // 
+  //       break;
+  //     case 'Coordinador':
+  //       navigate('/Coordinador'); // 
+  //       break;
+  //     default:
+  //       console.log('Invalid role');
+  //   }
+  // } else {
+  //   console.log('Invalid credentials');
+  // }
 
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
+  // const handleUsernameChange = (e) => {
+  //   setUsername(e.target.value);
+  // };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+  // const handlePasswordChange = (e) => {
+  //   setPassword(e.target.value);
+  // };
 
-  const handleLogin = (e) => {
-    e.preventDefault(); // previene el refresh de la pagina
+  // const handleLogin = (e) => {
+  //   e.preventDefault(); // previene el refresh de la pagina
 
-    // implementar login real
-    if (username === testUser.username && password === testUser.password) {
-      console.log(`Logged in as ${role} with username: ${username}`);
+  //   // implementar login real
+  //   if (username === testUser.username && password === testUser.password) {
+  //     console.log(`Logged in as ${role} with username: ${username}`);
 
-      // realizar autenficicacion real con el servidor
-      //history.push('/'); // redireccionar a la pagina principal apropiada
-    } else {
-      console.log('Invalid credentials');
-      // hay que manejar credenciales invalidas
-    }
-  };
+  //     // realizar autenficicacion real con el servidor
+  //     //history.push('/'); // redireccionar a la pagina principal apropiada
+  //   } else {
+  //     console.log('Invalid credentials');
+  //     // hay que manejar credenciales invalidas
+  //   }
+  // };
 
   const background = {
     backgroundImage: `url(${frame_2})`,
@@ -139,18 +172,25 @@ function Login({ role }) {
         </a>
         <h2 style={alignCenter}>Iniciar sesión</h2>
         <p style={smallerTextStyle}>{Role}</p>
-        <form onSubmit={handleLogin}>
+        {
+        loginErrors.map((error, i) =>(
+          <div className='bd-red-500 p-2' key={i}> {error}</div>       
+            ))
+        }
+        <form onSubmit={onSubmit}>
           <div className="form-group">
             <label htmlFor="username">Usuario</label>
             <br />
             <input
               type="text"
               id="username"
-              value={username}
-              onChange={handleUsernameChange}
+              {...register("email", {required:true})}
               placeholder="Ingresa tu usuario..." 
               style={inputStyle} 
             />
+            {errors.email && (
+              <p className='text-red-500'> email requerido</p>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
@@ -158,14 +198,16 @@ function Login({ role }) {
             <input
               type="password"
               id="password"
-              value={password}
-              onChange={handlePasswordChange}
+              {...register("password", {required:true})}
               placeholder='Ingresa tu contraseña...'
               style={inputStyle}
             />
+            {errors.password && (
+              <p className='text-red-500'> contraseña requerida</p>
+            )}
           </div>
           <br />
-          <button style={ButtonStyle} onClick={handleLogin} type="submit">Ingresar</button>
+          <button style={ButtonStyle} type="submit">Ingresar</button>
         </form>
       </div>
     </div>

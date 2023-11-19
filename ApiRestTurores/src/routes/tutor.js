@@ -1,49 +1,32 @@
 const express = require("express")
 const userSchema = require ('../models/user')
+const {allTutores, agregarTutor, seleccionarByID, actualizarEstado, deleteTutor, actualizarTutor} = require('../controllers/tutor.controller')
+const {validateSchema} = require("../middlewares/validator.middleware")
+const{crearTutorSchema} = require("../schemas/tutor.schema")
 
 const router = express.Router();
 
 //Agregar tutor
-
-router.post('/tutores', (req, res) =>{
-    const user = userSchema(req.body);
-    user.save().then((data) => res.json(data)).catch((error) => res.json({message: error}))
-});
-
+router.post('/tutores', validateSchema(crearTutorSchema),agregarTutor);
 
 //Seleccionar todos los usuarios
 
-router.get('/tutores', (req, res) =>{
-    userSchema
-    .find()
-    .then((data) => res.json(data))
-    .catch((error) => res.json({message:error}))
-});
-
+router.get('/tutores', allTutores);
 
 //Seleccionar un tutor de la base de datos
 
-router.get("/tutores/:id", (req,res) =>{
-    const {id} = req.params;
-    userSchema.findById(id)
-    .then((data) => res.json(data))
-    .catch((error) => res.json({message:error}));
-});
+router.get("/tutores/:id", seleccionarByID);
 
 //Actualizar estado de turno tutor normal
 
-router.put("/tutores/state/:id", (req,res) =>{
-    const {id} = req.params;
-    const{Estado} = req.body;
-    userSchema.updateOne({_id: id},{$set: {Estado}})
-    .then((data) => res.json(data))
-    .catch((error) => res.json({message:error}));
-});
+router.put("/tutores/state/:id", actualizarEstado);
+
+//Actualizar datos
+
+router.put("/tutores/update/:id", actualizarTutor);
+
+//Eliminar tutor
+router.delete("/tutores/delete/:id", deleteTutor);
 
 
 module.exports = router;
-
-
-// 
-// asdasdsa
-// asd

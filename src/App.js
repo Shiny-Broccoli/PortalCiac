@@ -15,6 +15,11 @@ import VentanaDeReemplazos from "./pages/VentanaDeReemplazos";
 import VentanaTurnos from "./pages/VentanaTurnos";
 import VistaTutor from "./pages/VistaTutor";
 
+import RegistrationForm from './pages/register';
+import {AuthProvider} from './contextUser/contextUser';
+import ProtectedRoute from './ProtectedRoute';
+
+
 function App() {
   // const action = useNavigationType();
   // const location = useLocation();
@@ -67,25 +72,31 @@ function App() {
   //   }
   // }, [pathname]);
   return (
-    <Router>
-      <div className="app">
-        <Routes>
-          <Route path="/yourRoute/:URLvariable" element={<Login />} />
-          <Route path="/" element={<RoleSelectionPage />} />
-          <Route path="/AdminLoginPage" element={<AdminLoginPage/>} />
-          <Route path="/TutorLoginPage" element={<TutorLoginPage />} />
-          <Route path="/CoordinadorLoginPage" element={<CoordinadorLoginPage />} />
-          <Route path="/Admin" element={<Admin />} />
-          <Route path="/Horario" element={<Horario />} />
-          <Route path="/Coordinador" element={<Coordinador />} />
-          <Route path="/ventana-turnos" element={<VentanaTurnos />} />
-          <Route path="/ventana-de-ausencias" element={<VentanaDeAusencias />} />
-          <Route path="/ventana-de-horas" element={<VentanaDeHoras />} />
-          <Route path="/ventana-de-reemplazos" element={<VentanaDeReemplazos />} />
-          <Route path="/vista-tutor" element={<VistaTutor />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="app">
+          <Routes>
+            <Route path="/register" element={<RegistrationForm />} />
+            <Route path="/yourRoute/:URLvariable" element={<Login />} />
+            <Route path="/" element={<RoleSelectionPage />} />
+            <Route path="/AdminLoginPage" element={<AdminLoginPage/>} />
+            <Route path="/TutorLoginPage" element={<TutorLoginPage />} />
+            <Route path="/CoordinadorLoginPage" element={<CoordinadorLoginPage />} />
+
+            <Route element={<ProtectedRoute/>}>
+              <Route path="/Admin" element={<Admin />} />
+              <Route path="/Horario" element={<Horario />} />
+              <Route path="/Coordinador" element={<Coordinador />} />
+              <Route path="/ventana-turnos" element={<VentanaTurnos />} />
+              <Route path="/ventana-de-ausencias" element={<VentanaDeAusencias />} />
+              <Route path="/ventana-de-horas" element={<VentanaDeHoras />} />
+              <Route path="/ventana-de-reemplazos" element={<VentanaDeReemplazos />} />
+              <Route path="/vista-tutor" element={<VistaTutor />} />
+            </Route>
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

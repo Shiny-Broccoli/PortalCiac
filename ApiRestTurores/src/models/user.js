@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true
@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
     },
     tipoTutor:{
         type:String,
-        required: true
+        
     },
     codigoTUI:{
         type: Number,
@@ -25,13 +25,15 @@ const userSchema = mongoose.Schema({
     },
     Estado:{
         type: Number, //0, ausente; 1, En turno; 2, En reemplazo
-        require : true,
+        
         default: 0
     },
     
     //LUN1-2
     //Falta agregar estadisticas
-})
+},{
+    timestamps: true
+});
 
 module.exports = mongoose.model('User', userSchema)
 
