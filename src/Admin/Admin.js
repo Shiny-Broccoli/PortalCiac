@@ -5,10 +5,7 @@ import Turno from "../components/Turno/Turno";
 import Wrapper from "../components/Wrapper/Wrapper";
 import '../styles.css';
 import s from './Admin.module.css'
-import axios from 'axios';
 import {obtenerDatosDeAPI} from "../api/auth"
-
-//const Arreglo = [{"nombre":"Christian Barrios", "estado": "En turno", "tipoTutor" : "Tutor/a de Mat/Fis"}, {"nombre":"Sofia Rios", "estado": "Ausente", "tipoTutor" : "Tutor/a de Mat/Fis"}];
 
 
 function Admin() {
@@ -23,7 +20,6 @@ function Admin() {
   const bloques = ['1-2','3-4','5-6','7-8','9-10','11-12'];
   const [bloqueActualIndex, setBloqueActualIndex] = useState(0);
   const [ModalR, setModal] = useState(false);
-  //axios.get('http://localhost:9000/api/tutores') 
 
   const Arreglo = [
     {"nombre":"Christian Barrios", "Estado": 0, "tipoTutor" : "Tutor/a de Mat/Fis", "bloque": "3-4"}, 
