@@ -4,14 +4,16 @@ import InfoBloque from "../components/InfoBloque/InfoBloque";
 import Turno from "../components/Turno/Turno";
 import Wrapper from "../components/Wrapper/Wrapper";
 import '../styles.css';
-import s from './Admin.module.css'
-import {obtenerDatosDeAPI} from "../api/auth"
+import s from './Admin.module.css';
+import axios from 'axios';
+import {obtenerDatosDeAPI} from "../api/auth";
+import {updateState} from "../api/tutorQuerys";
 
 
 function Admin() {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarForm, setMostrarForm] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({tutors:[]});
   const [ id, setId ] = useState('');
   const [ rol, setRol ] = useState('');
   const [accessError, setAccessError] = useState(false);
@@ -20,6 +22,7 @@ function Admin() {
   const bloques = ['1-2','3-4','5-6','7-8','9-10','11-12'];
   const [bloqueActualIndex, setBloqueActualIndex] = useState(0);
   const [ModalR, setModal] = useState(false);
+
 
   const Arreglo = [
     {"nombre":"Christian Barrios", "Estado": 0, "tipoTutor" : "Tutor/a de Mat/Fis", "bloque": "3-4"}, 
@@ -60,12 +63,20 @@ function Admin() {
 
   //Comprueba que el ID exista en la base de datos de los tutores.
   const comprobarId = () => {
-    console.log('ID ingresado:', id);
+    console.log('ID ingresado:', id, data);
+    const persona = data.tutors.filter((elem) =>elem.RUT === id);
+    const {Estado: oldState} = persona;
+    console.log(tutorId,suc);
 
     const comprobacion = true;
-
     if (comprobacion && id !== ''){
       setAccessSuccess(true);
+      if (oldState === 0){
+        updateState(1);
+      }
+      if (oldState === 1){
+        updateState(0);
+      }
     }
     if (!comprobacion && id !== ''){
       setAccessError(true)
@@ -127,19 +138,8 @@ function Admin() {
   useEffect(() => {
     // Realiza una solicitud GET a la API
     //esta consulta debe mostrar los tutores del turno actual + tutores que estén en reemplazo o en turno.
-    obtenerDatosDeAPI(setData);
-  }, [accessSuccess]);
-  
-  
-  useEffect(() =>{
-
-
-  }, [data])
-  
-  const trad = (index) => {
-    console.log(index)
-    return index
-  }
+    obtenerDatosDeAPI(bloques[bloqueActualIndex], setData);
+  }, [accessSuccess, bloqueActualIndex]);
 
   return(
     <>
@@ -148,10 +148,10 @@ function Admin() {
       <h1>Turnos actuales</h1>
       <div className={s.box}>
         <div className={s.turnos}>
-        {data.filter(item => item.bloque === trad(bloques[bloqueActualIndex])).map((item) => (         
+        {data.tutors.map((item) => (         
           <Turno
-            key={item.nombre}
-            name={item.nombre}
+            key={item._id}
+            name={item.name}
             tipoTutor={item.tipoTutor}
             state={
               item.Estado === 0 ? 'Ausente' :
@@ -161,7 +161,7 @@ function Admin() {
             }
           />
         ))}
-        {data.filter(item => item.bloque === bloques[bloqueActualIndex]).length === 0 && (
+        {data.tutors.length === 0 && (
                 <div className={s.noTutores}>
                   No hay tutores en este bloque 
                 </div>

@@ -8,7 +8,7 @@ function LogoName(logoNameProps) {
   const inicial = name.charAt(0);
 
   return (
-    <section className={tipoTutor === 'Tutor/a de Mat/Fis' ? s.azul : tipoTutor === 'Tutor/a de Programación' ? s.verde : tipoTutor === 'Tutor/a de Química' ? s.rosado : tipoTutor === 'Admin' ? s.amarillo : s.gris }>
+    <section className={tipoTutor === 'Tutor/a Mat/Fis' ? s.azul : tipoTutor === 'Tutor/a Programación' ? s.verde : tipoTutor === 'Tutor/a de Química' ? s.rosado : tipoTutor === 'Admin' ? s.amarillo : s.gris }>
       {inicial}
     </section>
   );

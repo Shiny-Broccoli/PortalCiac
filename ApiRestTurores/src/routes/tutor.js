@@ -1,5 +1,6 @@
 const express = require("express")
 const userSchema = require ('../models/user')
+const shiftSchema = require ('../models/shift')
 const {allTutores, agregarTutor, seleccionarByID, actualizarEstado, deleteTutor, actualizarTutor} = require('../controllers/tutor.controller')
 const {validateSchema} = require("../middlewares/validator.middleware")
 const{crearTutorSchema} = require("../schemas/tutor.schema")
@@ -74,6 +75,35 @@ router.get('/tutores/working/:day/:block', (req, res) =>{
     })
     .catch((error) => res.json({message:error}));
 });
+
+//Buscar todos los tutores de un día
+router.get('/tutoresdia/:day/:block', (req, res) =>{
+
+    const {day, block} = req.params
+    
+    shiftSchema
+    .findOne({day: day, block:block})
+    .then((data) => {
+        const tutorPromises = data.tutorsId.map((element) => {
+            return userSchema.findById(element);
+        });
+    return Promise.all(tutorPromises);
+    })
+    .then((tutors) => {
+        res.json({ tutors });
+      })
+      .catch((error) => res.status(500).json({ message: error.message }));
+  });
+
+
+//crear turno
+router.post('/turno', async (req, res) =>{
+    const user = userSchema(req.body);
+    await user.save().then((data) => res.json(data)).catch((error) => res.json({message: error}));
+});
+
+//
+
 
 
 module.exports = router;

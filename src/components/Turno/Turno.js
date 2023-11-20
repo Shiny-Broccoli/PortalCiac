@@ -3,7 +3,7 @@ import LogoName from '../LogoName/LogoName';
 import s from './Turno.module.css';
 
 function Turno(Turnoprops) {
-
+  console.log("rawr")
   const { name, tipoTutor, state } = Turnoprops;
 
   return (
