@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import Header from "../components/Header/Header";
 import InfoBloque from "../components/InfoBloque/InfoBloque";
 import Turno from "../components/Turno/Turno";
 import Wrapper from "../components/Wrapper/Wrapper";
 import '../styles.css';
+import s from './Admin.module.css'
 import axios from 'axios';
 import {obtenerDatosDeAPI} from "../api/auth"
 
@@ -13,7 +14,7 @@ import {obtenerDatosDeAPI} from "../api/auth"
 function Admin() {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarForm, setMostrarForm] = useState(false);
-  const [data] = useState([]);
+  const [data, setData] = useState([]);
   const [ id, setId ] = useState('');
   const [ rol, setRol ] = useState('');
   const [accessError, setAccessError] = useState(false);
@@ -24,6 +25,12 @@ function Admin() {
   const [ModalR, setModal] = useState(false);
   //axios.get('http://localhost:9000/api/tutores') 
 
+  const Arreglo = [
+    {"nombre":"Christian Barrios", "Estado": 0, "tipoTutor" : "Tutor/a de Mat/Fis", "bloque": "3-4"}, 
+    {"nombre":"Sofia Rios", "Estado": 1, "tipoTutor" : "Tutor/a de Química", "bloque": "3-4"},
+    {"nombre":"Vicente Luongo", "Estado": 2, "tipoTutor" : "Tutor/a de Mat/Fis", "bloque": "5-6"},
+    {"nombre":"Gabriel Venegas", "Estado": "Ausente", "tipoTutor" : "Tutor/a de Mat/Fis", "bloque": "7-8"},
+  ];
   const changeModal = () => {
     setModal(!ModalR);
   };
@@ -128,6 +135,17 @@ function Admin() {
     obtenerDatosDeAPI(setData);
   }, [accessSuccess]);
   
+  
+  useEffect(() =>{
+
+
+  }, [data])
+  
+  const trad = (index) => {
+    console.log(index)
+    return index
+  }
+
   return(
     <>
     <Header/>
@@ -135,7 +153,7 @@ function Admin() {
       <h1>Turnos actuales</h1>
       <div className={s.box}>
         <div className={s.turnos}>
-        {Arreglo.filter(item => item.bloque === bloques[bloqueActualIndex]).map((item) => (         
+        {data.filter(item => item.bloque === trad(bloques[bloqueActualIndex])).map((item) => (         
           <Turno
             key={item.nombre}
             name={item.nombre}
@@ -148,7 +166,7 @@ function Admin() {
             }
           />
         ))}
-        {Arreglo.filter(item => item.bloque === bloques[bloqueActualIndex]).length === 0 && (
+        {data.filter(item => item.bloque === bloques[bloqueActualIndex]).length === 0 && (
                 <div className={s.noTutores}>
                   No hay tutores en este bloque 
                 </div>
