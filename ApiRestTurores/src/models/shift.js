@@ -6,12 +6,12 @@ const shiftSchema = mongoose.Schema({
         required: True
     },
     block: {
-        type: Number,       //ej: 1-2-> 12, 3-4-> 34 ... 9-10->910.
+        type: String,       //ej: 1-2-> 12, 3-4-> 34 ... 9-10->910.
         required: True
     },
     tutorsId:{
         type: [{
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.userSchema.Types.ObjectId,
             ref: 'User' // id de tipo tutor maomenos tiktok.
           }],
         default: []
