@@ -39,6 +39,8 @@ function Admin() {
   const changeForm = () => {
     setMostrarModal(false);
     setMostrarForm(!mostrarForm);
+    setAccessError(false);
+    setAccessSuccess(false);
   };
 
   //Abre la modal de ingresar turno
@@ -79,18 +81,15 @@ function Admin() {
 
     console.log("Aqui", inputError);
     console.log(id);
-  
-    if (rol === '') {
-      hasError = true;
-    }
-  
-    if (id === '') {
+
+    if (rol === '' && id === '') {
+      console.log("Entro aqui");
       hasError = true;
     }
   
     setInputError(hasError);
 
-    console.log("MAs abajo", inputError);
+    console.log("Mas abajo", inputError);
   
     setTimeout(() => {
       setInputError(false);

@@ -7,9 +7,11 @@ function Header() {
   const {isAuthenticated, logout}= useAuth();
   return (
     <section className={s.header}>
-      <img src="/Logo.svg" alt="Logo" className={s.logo}/>
+      <Link to="/Admin">
+        <img src="/Logo.svg" alt="Logo" className={s.logo}/>
+      </Link>
       <div className={s.links}>
-        <Link to="/">
+        <Link to="/Admin">
           <button className={s.button}>Home</button>
         </Link>
         <Link to="/">
