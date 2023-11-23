@@ -11,17 +11,13 @@ export const obtenerDatosDeAPI = (block, setData) => {
 
     const actualDay = days[dayIndex];
     console.log("El día de hoy es:", actualDay);
+    const tiktok = "LUNES";
 
-    axios.get(`/tutoresdia/${actualDay}/${block}`)
+    axios.get(`/tutoresdia/${tiktok}/${block}`)
       .then(response => {
         const apiData = response.data;
         console.log('Data de la API:', apiData);
         setData(apiData);
-
-
-
-
-
       })
       .catch(error => {
         console.error('Error al obtener datos de la API', error);

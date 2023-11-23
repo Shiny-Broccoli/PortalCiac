@@ -1,3 +1,5 @@
 import axios from './axios';
 
-export const updateState = (n,id) => axios.put(`/tutor/state/${n}`);
+export const updateState = (n,rut) => {
+    console.log("Query puteado");
+    axios.put(`/tutores/updateState/${n}/${rut}`);}

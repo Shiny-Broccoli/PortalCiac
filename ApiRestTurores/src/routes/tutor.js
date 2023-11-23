@@ -91,8 +91,8 @@ router.get('/tutoresdia/:day/:block', (req, res) =>{
     })
     .then((tutors) => {
         res.json({ tutors });
-      })
-      .catch((error) => res.status(500).json({ message: error.message }));
+    })
+    .catch((error) => res.status(500).json({ message: error.message }));
   });
 
 
@@ -102,7 +102,26 @@ router.post('/turno', async (req, res) =>{
     await user.save().then((data) => res.json(data)).catch((error) => res.json({message: error}));
 });
 
-//
+router.put('/tutores/updateState/:newState/:rut', async (req, res) => {
+    const { newState, rut } = req.params;
+
+    try {
+        const updatedUser = await userSchema.updateOne(
+            { RUT: rut },
+            { $set: { Estado: newState } }
+        );
+
+        if (updatedUser.modifiedCount > 0) {
+            console.log(`${rut} actualizado a estado: ${newState}`);
+            res.status(200).json({ message: 'Estado actualizado correctamente' });
+        } else {
+            res.status(404).json({ message: 'No se encontró ningún usuario para actualizar' });
+        }
+    } catch (error) {
+        console.error('Error al actualizar:', error);
+        res.status(500).json({ message: 'Error al actualizar el estado', error: error.message });
+    }
+});
 
 
 

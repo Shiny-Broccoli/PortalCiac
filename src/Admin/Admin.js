@@ -15,7 +15,8 @@ function Admin() {
   const [mostrarForm, setMostrarForm] = useState(false);
   const [data, setData] = useState({tutors:[]});
   const [ id, setId ] = useState('');
-  const [ rol, setRol ] = useState('');
+  const [ rut1, setRut1 ] = useState('');
+  const [ rut2, setRut2 ] = useState('');
   const [accessError, setAccessError] = useState(false);
   const [accessSuccess, setAccessSuccess] = useState(false);
   const [ inputError, setInputError ] = useState(false);
@@ -57,30 +58,34 @@ function Admin() {
     setMostrarForm(false);
     setModal(false);
     setId('');
-    setRol('');
+    setRut2('');
+    setRut1('');
     console.log(inputError);
   };
 
   //Comprueba que el ID exista en la base de datos de los tutores.
   const comprobarId = () => {
     console.log('ID ingresado:', id, data);
-    const persona = data.tutors.filter((elem) =>elem.RUT === id);
-    const {Estado: oldState} = persona;
-    console.log(tutorId,suc);
+    var persona = data.tutors.filter((elem) =>elem.RUT === id);
+    persona = persona.length === 0 ? {RUT: null, oldState: -1} : persona[0];
+    const {Estado: oldState, RUT: rut, name: name} = persona;    
+    console.log("persona es:",persona);
 
-    const comprobacion = true;
-    if (comprobacion && id !== ''){
+    const comprobacion = rut === null ? false : true;
+    console.log("encontrado?: ",comprobacion);
+    if (comprobacion){
       setAccessSuccess(true);
       if (oldState === 0){
-        updateState(1);
+        updateState(1,rut);
       }
       if (oldState === 1){
-        updateState(0);
+        updateState(0,rut);
       }
     }
     if (!comprobacion && id !== ''){
       setAccessError(true)
-    } 
+    }
+
   };
 
   const inputErrorFunction = () => {
@@ -89,7 +94,7 @@ function Admin() {
     console.log("Aqui", inputError);
     console.log(id);
 
-    if (rol === '' && id === '') {
+    if (rut1 === '' && id === '') {
       console.log("Entro aqui");
       hasError = true;
     }
@@ -109,17 +114,24 @@ function Admin() {
   };
 
   //Comprueba que el rol exista en la base de datos de los tutores.
-  const comprobarRol = () => {
-    
-    console.log('Rol ingresado:', rol);
-
+  const comprobarReemplazo = () => {
+    console.log('Rut reemplazado:', rut1);
+    console.log("Rut reemplazante:",rut2);
+    //busca reemplazado
+    var persona = data.tutors.filter((elem) =>elem.RUT === rut1);
+    persona = persona.length === 0 ? {RUT: null, oldState: -1,name: "no existo:C"} : persona[0];
+    const {Estado: oldStateI, RUT: rutI, name: nameI} = persona;
+    console.log("nombre del reemplazado:",nameI);
+    //tutor reemplazado listo
+    //busca reemplazante
+    var persona2 = {};
+    //reemplazante encontrado
     const comprobacion = true;
-
-    if (comprobacion && rol !== ''){
+    if (comprobacion && rut1 !== ''){
       setAccessSuccess(true);
     }
 
-    if(!comprobacion && rol !== ''){
+    if(!comprobacion && rut1 !== ''){
       setAccessError(true)
     } 
 
@@ -131,10 +143,14 @@ function Admin() {
   };
 
   //Recupera el rol del input
-  const recuperarRol = (event) => {
-    setRol(event.target.value);
-  };
+  const recuperarRut = (event) => {
+    setRut1(event.target.value);
 
+  };
+  const recuperarRut2 = (event) => {
+    setRut2(event.target.value);
+
+  };
   useEffect(() => {
     // Realiza una solicitud GET a la API
     //esta consulta debe mostrar los tutores del turno actual + tutores que estén en reemplazo o en turno.
@@ -235,13 +251,13 @@ function Admin() {
         </div>
         <div className={s.box2}>
           <div className={s.label}>
-            <label>Rol:</label>
-            <input type="text" name="rol" value={rol} onChange={recuperarRol} className={`${inputError ? s.inputError : s.input}`}/>
+            <label>Rut:</label>
+            <input type="text" name="rut1" value={rut1} onChange={recuperarRut} className={`${inputError ? s.inputError : s.input}`}/>
           </div>
           <div className={s.buttons}>
             <button 
             className={s.button} 
-            onClick={() => { comprobarRol(); inputErrorFunction(); }}>
+            onClick={() => { comprobarReemplazo(); inputErrorFunction(); }}>
               Ingresar
             </button>
           </div>
@@ -275,13 +291,17 @@ function Admin() {
         </div>
         <div className={s.box2}>
           <div className={s.label}>
-            <label>Rol:</label>
-            <input type="text" name="rol" value={rol} onChange={recuperarRol} className={`${inputError ? s.inputError : s.input}`}/>
+            <label>Rut del reemplazado:</label>
+            <input type="text" name="rut1" value={rut1} onChange={recuperarRut} className={`${inputError ? s.inputError : s.input}`}/>
+          </div>
+          <div className={s.label}>
+            <label>Rut del que reemplaza:</label>
+            <input type="text" name="rut2" value={rut2} onChange={recuperarRut2} className={`${inputError ? s.inputError : s.input}`}/>
           </div>
           <div className={s.buttons}>
             <button 
             className={s.button} 
-            onClick={() => { comprobarRol(); inputErrorFunction(); }}>
+            onClick={() => { comprobarReemplazo(); inputErrorFunction(); }}>
               Ingresar
             </button>
           </div>
